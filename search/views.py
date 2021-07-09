@@ -1,8 +1,8 @@
 from django.http.response import HttpResponseRedirect
 from django.shortcuts import render
 from django.http import HttpResponse
-from .models import Search, Item
-from .forms import CreateNewModel
+from .models import Search
+from .forms import CreateForm, CreateNewModel
 from django.urls import reverse, reverse_lazy
 
 # Create your views here.
@@ -19,16 +19,13 @@ def result(response, model_id):
 
 def createModel(response):
     if response.method == "POST":
-        form = CreateNewModel(response.POST)
-
+        form = CreateForm(response.POST)
         if form.is_valid():
-            n = form.cleaned_data["modelName"]
-            t = Search(modelName = n)
-            t.save()
+            form.save()
 
-        return HttpResponseRedirect("/search/%i" %t.id)
+        return HttpResponseRedirect("/search/")
     else:
-        form = CreateNewModel()
+        form = CreateForm()
     return render(response,"search/createModel.html", {"form":form})
 
 

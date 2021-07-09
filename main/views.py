@@ -12,3 +12,13 @@ def home(response):
 def re_home(response):
     return HttpResponseRedirect('/main/')
 
+def newsCreate(response):
+    if response.method == "POST":
+        form = CreateNewUpdate(response.POST)
+        
+        if form.is_valid():
+            form.save()
+            return redirect("/main/home")
+    else:
+        form = CreateNewUpdate()
+    return render(response, "main/newsCreate.html", {"form":form})
