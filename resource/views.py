@@ -29,10 +29,7 @@ def upload(request):
     else:
         form = documentforms()
 
-    documents = document.objects.all()
-
     context = {
-        'documents': documents,
         'form': form,
         'message': message
     }
