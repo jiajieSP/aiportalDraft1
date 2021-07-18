@@ -3,6 +3,7 @@ from django.urls.base import reverse, reverse_lazy
 from main.models import newsUpdate
 from .forms import CreateNewUpdate
 from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 def home(response):
