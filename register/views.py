@@ -12,8 +12,9 @@ def register(response):
         form = UserCreationForm(response.POST)
         if form.is_valid():
             form.save()
+            print('form success')
 
-        return redirect("/search")
+        return redirect("/administration/account")
     else:
         form = UserCreationForm()
     return render(response, "register/register.html", {"form": form})
