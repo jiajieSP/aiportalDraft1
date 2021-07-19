@@ -11,4 +11,7 @@ urlpatterns = [
     path('account', views.accounts, name='account'),
     path('updateAccount/<account_id>', views.updateAccount, name='updateAccount'),
     path('deleteAccount/<account_id>', views.deleteAccount, name='deleteAccount'),
+    path('newsList', views.news, name='newsList'),
+    path('updateNews/<news_id>', views.updateNews, name='updateNews'),
+    path('deleteNews/<news_id>', views.deleteNews, name='deleteNews'),
 ]

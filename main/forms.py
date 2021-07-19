@@ -1,11 +1,13 @@
+from administration.views import news
 from django import forms
 from django.forms.fields import DateField
+from .models import newsUpdate
 
 # Create forms here
 
 
-class CreateNewUpdate(forms.Form):
-    newsName = forms.CharField(label="newsName", max_length=200)
-    newsDate = forms.DateField()
-    newsContent = forms.CharField(label="newsContent", max_length=200)
-    newsCreator = forms.CharField(label="newsCreator", max_length=200)
+class CreateNewUpdate(forms.ModelForm):
+    class Meta:
+        model = newsUpdate
+        fields = '__all__'
+

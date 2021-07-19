@@ -8,5 +8,5 @@ app_name = 'main'
 urlpatterns = [
     path('', views.home, name='home'),
     path('home', views.re_home, name='re_home'),
-
+    path('newsCreate', views.newsCreate, name='newsCreate')
 ]
