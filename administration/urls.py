@@ -14,4 +14,10 @@ urlpatterns = [
     path('newsList', views.news, name='newsList'),
     path('updateNews/<news_id>', views.updateNews, name='updateNews'),
     path('deleteNews/<news_id>', views.deleteNews, name='deleteNews'),
+    path('resourceList', views.resource, name='resourceList'),
+    path('updateResource/<resource_id>', views.updateResource, name='updateResource'),
+    path('deleteResource/<resource_id>', views.deleteResource, name='deleteResource'),
+    path('modelList', views.model, name='modelList'),
+    path('updateModel/<model_id>', views.updateModel, name='updateModel'),
+    path('deleteModel/<model_id>', views.deleteModel, name='deleteModel')
 ]

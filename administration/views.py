@@ -1,11 +1,22 @@
-from main.models import newsUpdate
-from register.forms import registerForm
+from resource.models import document
 from django.shortcuts import redirect, render
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
-import register
-from main import forms
 from .filters import accountFilter
+
+from main import models
+from main import forms
+from main.models import newsUpdate
+
+from register.forms import registerForm
+import register
+
+from resource import models
+from resource.forms import documentforms
+
+from search import models
+from search.forms import CreateForm
+
 
 # Create your views here.
 def home(response):
@@ -53,4 +64,41 @@ def deleteNews(request, news_id):
     news = newsUpdate.objects.get(pk=news_id)
     news.delete()
     return redirect('/administration/newsList')
-    
+
+def resource(request):
+    resource = document.objects.all()
+    return render(request, "administration/resource.html", {'resource':resource})
+
+def updateResource(request, resource_id):
+    resource = document.objects.get(pk=resource_id)
+    form = documentforms(request.POST or None, instance=resource)
+    if form.is_valid():
+        form.save()
+        print('form success')
+        return redirect('/administration/resourceList')
+    else:
+        return render(request, 'administration/updateResource.html', {'resource':resource, 'form':form})
+
+def deleteResource(request, resource_id):
+    resource = document.objects.get(pk=resource_id)
+    resource.delete()
+    return redirect('/administration/resourceList')
+
+def model(request):
+    model = models.Search.objects.all()
+    return render(request, "administration/model.html", {'model':model})
+
+def updateModel(request, model_id):
+    model = models.Search.objects.get(pk=model_id)
+    form = CreateForm(request.POST or None, instance=model)
+    if form.is_valid():
+        form.save()
+        print('form success')
+        return redirect('/administration/modelList')
+    else:
+        return render(request, 'administration/updateModel.html', {'model':model, 'form':form})
+
+def deleteModel(request, model_id):
+    model = models.Search.objects.get(pk=model_id)
+    model.delete()
+    return redirect('/administration/modelList')
