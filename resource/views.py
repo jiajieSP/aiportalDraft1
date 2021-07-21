@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.http.response import HttpResponseRedirect
 from .models import document
 from .forms import documentforms
+from django.core.paginator import Paginator
 
 # Create your views here.
 
@@ -9,9 +10,14 @@ def resourceResult(response, resource_id):
     m = document.objects.get(pk = resource_id)
     return render(response, "resource/resourceResult.html", {"m":m})
 
-def home(response):
+def home(request):
     documents = document.objects.all()
-    return render(response, "resource/home.html", {"documents":documents})
+
+    p = Paginator(documents, 20)
+    page = request.GET.get('page')
+    documents = p.get_page(page)
+
+    return render(request, "resource/home.html", {"documents":documents})
 
 def upload(request):
     message = "Upload any file"
@@ -35,13 +41,17 @@ def upload(request):
     }
     return render(request, "resource/upload.html", context)
 
-def resourceSearch(response):
-    if response.method == "POST":
-        searched = response.POST['searched']
+def resourceSearch(request):
+    if request.method == "POST":
+        searched = request.POST['searched']
         m = document.objects.filter(name__contains=searched)
+
+        p = Paginator(m, 75)
+        page = request.GET.get('page')
+        m = p.get_page(page)
         
-        return render(response, "resource/searchResult.html", {'searched':searched, 'm':m})
+        return render(request, "resource/searchResult.html", {'searched':searched, 'm':m})
     else:
-        return render(response, "resource/searchResult.html", {})
+        return render(request, "resource/searchResult.html", {})
 
 

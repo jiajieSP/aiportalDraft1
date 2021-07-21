@@ -4,6 +4,7 @@ from django.http import HttpResponse
 from .models import Search
 from .forms import CreateForm, CreateNewModel
 from django.urls import reverse, reverse_lazy
+from django.core.paginator import Paginator
 
 # Create your views here.
 # def SearchIndex(response, id):
@@ -29,20 +30,30 @@ def createModel(response):
     return render(response,"search/createModel.html", {"form":form})
 
 
-def modelList(response):
+def modelList(request):
     m = Search.objects.all()
-    return render(response, "search/modelList.html", {"m":m})
+
+    p = Paginator(m, 20)
+    page = request.GET.get('page')
+    m = p.get_page(page)
+
+    return render(request, "search/modelList.html", {"m":m})
 
 def re_modelList(response):
     return HttpResponseRedirect('/search/')
 
-def modelSearch(response):
-    if response.method == "POST":
-        searched = response.POST['searched']
+def modelSearch(request):
+    if request.method == "POST":
+        searched = request.POST['searched']
         m = Search.objects.filter(modelName__contains=searched)
-        return render(response, "search/searchResults.html", {'searched':searched, 'm':m})
+
+        p = Paginator(m, 75)
+        page = request.GET.get('page')
+        m = p.get_page(page)
+        
+        return render(request, "search/searchResults.html", {'searched':searched, 'm':m})
     else:
-        return render(response, "search/searchResults.html", {})
+        return render(request, "search/searchResults.html", {})
 
 
 # def searchResults(response):

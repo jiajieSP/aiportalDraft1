@@ -1,14 +1,21 @@
+from django.http import request
 from django.http.response import HttpResponseRedirect
 from django.urls.base import reverse, reverse_lazy
 from main.models import newsUpdate
 from .forms import CreateNewUpdate
+from .models import newsUpdate
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
 
 # Create your views here.
-def home(response):
+def home(request):
     a = newsUpdate.objects.all()
-    return render(response,"main/home.html", {"a":a})
+
+    p = Paginator(a, 5)
+    page = request.GET.get('page')
+    a = p.get_page(page)
+    return render(request,"main/home.html", {"a":a})
 
 def re_home(response):
     return HttpResponseRedirect('/main/')

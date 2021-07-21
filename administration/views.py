@@ -2,7 +2,8 @@ from resource.models import document
 from django.shortcuts import redirect, render
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
-from .filters import accountFilter
+
+from .filters import accountFilter, modelFilter, newsFilter, resourceFilter
 
 from main import models
 from main import forms
@@ -17,6 +18,9 @@ from resource.forms import documentforms
 from search import models
 from search.forms import CreateForm
 
+#import pagination
+from django.core.paginator import Paginator
+
 
 # Create your views here.
 def home(response):
@@ -25,9 +29,17 @@ def home(response):
 def accounts(request):
     User = get_user_model()
     users = User.objects.all()
+
     filter = accountFilter(request.GET, queryset=users)
     users = filter.qs
-    return render(request, "administration/account.html", {'users':users, 'filter':filter})
+
+    #set up pagination
+    p = Paginator(users, 20)
+    page = request.GET.get('page')
+    m = p.get_page(page)
+    
+    
+    return render(request, "administration/account.html", {'users':users, 'filter':filter, 'm':m})
 
 def updateAccount(request, account_id):
     User = get_user_model()
@@ -48,7 +60,14 @@ def deleteAccount(request, account_id):
 
 def news(request):
     news = newsUpdate.objects.all()
-    return render(request,"administration/news.html", {'news':news})
+
+    filter = newsFilter(request.GET, queryset=news)
+    news = filter.qs
+
+    p = Paginator(news, 20)
+    page = request.GET.get('page')
+    news = p.get_page(page)
+    return render(request,"administration/news.html", {'news':news, 'filter':filter})
 
 def updateNews(request, news_id):
     news = newsUpdate.objects.get(pk=news_id)
@@ -67,7 +86,15 @@ def deleteNews(request, news_id):
 
 def resource(request):
     resource = document.objects.all()
-    return render(request, "administration/resource.html", {'resource':resource})
+
+    filter = resourceFilter(request.GET, queryset=resource)
+    resource = filter.qs
+
+    p = Paginator(resource, 20)
+    page = request.GET.get('page')
+    resource = p.get_page(page)
+
+    return render(request, "administration/resource.html", {'resource':resource, 'filter':filter})
 
 def updateResource(request, resource_id):
     resource = document.objects.get(pk=resource_id)
@@ -86,7 +113,15 @@ def deleteResource(request, resource_id):
 
 def model(request):
     model = models.Search.objects.all()
-    return render(request, "administration/model.html", {'model':model})
+
+    filter = modelFilter(request.GET, queryset=model)
+    model = filter.qs
+
+    p = Paginator(model, 20)
+    page = request.GET.get('page')
+    model = p.get_page(page)
+
+    return render(request, "administration/model.html", {'model':model, 'filter':filter})
 
 def updateModel(request, model_id):
     model = models.Search.objects.get(pk=model_id)
