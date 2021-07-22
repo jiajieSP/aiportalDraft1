@@ -34,7 +34,7 @@ def accounts(request):
     users = filter.qs
 
     #set up pagination
-    p = Paginator(users, 20)
+    p = Paginator(users, 5)
     page = request.GET.get('page')
     m = p.get_page(page)
     
