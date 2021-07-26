@@ -11,9 +11,9 @@ def resourceResult(response, resource_id):
     return render(response, "resource/resourceResult.html", {"m":m})
 
 def home(request):
-    documents = document.objects.all()
+    documents = document.objects.order_by('-date')
 
-    p = Paginator(documents, 20)
+    p = Paginator(documents, 15)
     page = request.GET.get('page')
     documents = p.get_page(page)
 

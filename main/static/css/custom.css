@@ -81,6 +81,10 @@ a {
   color: inherit !important;
 }
 
+.result {
+  color: red !important;
+}
+
 @media (prefers-reduced-motion: reduce) {
     .nav-menu {
       transition: none;

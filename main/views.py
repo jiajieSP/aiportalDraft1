@@ -10,9 +10,9 @@ from django.core.paginator import Paginator
 
 # Create your views here.
 def home(request):
-    a = newsUpdate.objects.all()
+    a = newsUpdate.objects.order_by('-newsDate')
 
-    p = Paginator(a, 5)
+    p = Paginator(a, 8)
     page = request.GET.get('page')
     a = p.get_page(page)
     return render(request,"main/home.html", {"a":a})

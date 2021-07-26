@@ -1,7 +1,8 @@
 from django.db import models
 from datetime import datetime
-from django.db.models.fields import CharField
+from django.db.models.fields import CharField, IntegerField
 from django.utils.timezone import now
+import datetime
 
 # Create your models here.
 
@@ -17,7 +18,7 @@ from django.utils.timezone import now
 class Search(models.Model):
     modelName = models.CharField(verbose_name='Model Name' ,max_length=130)
     modelText = models.CharField(max_length=50,unique=True, null=True)
-    modelDate = models.DateField(blank=True, null=True)
+    modelDate = models.DateField(default=datetime.datetime.now)
     modelIntro = models.TextField(blank=True,null=True)
     modelUsage = models.TextField(blank=True,null=True)
     modelStrength = models.TextField(blank=True,null=True)
@@ -33,3 +34,15 @@ class Item(models.Model):
 
     def __str__(self):
         return self.desc
+
+class aiModel(models.Model):
+    name = models.CharField(verbose_name='Name of Model',max_length=130)
+    date = models.DateField(default=datetime.datetime.now)
+    wer = CharField(blank=True,null=True,max_length=130)
+    wordcount = IntegerField(blank=True,null=True)
+    usage = models.TextField(blank=True,null=True)
+    creator = models.CharField(max_length=130,blank=True,null=True)
+
+    def __str__(self):
+        return self.name
+    

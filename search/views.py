@@ -1,8 +1,8 @@
 from django.http.response import HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.http import HttpResponse
-from .models import Search
-from .forms import CreateForm, CreateNewModel
+from .models import  aiModel
+from .forms import CreateForm, CreateNewModel, createAiForm
 from django.urls import reverse, reverse_lazy
 from django.core.paginator import Paginator
 
@@ -14,26 +14,27 @@ from django.core.paginator import Paginator
 #     return render(response,"search/result.html", {"model":s})
 
 def result(response, model_id):
-    m = Search.objects.get(pk = model_id)
+    m = aiModel.objects.get(pk = model_id)
     return render(response,"search/result.html", {"m":m})
 
 
-def createModel(response):
-    if response.method == "POST":
-        form = CreateForm(response.POST)
+def createModel(request):
+    if request.method == "POST":
+        form = createAiForm(request.POST)
         if form.is_valid():
             form.save()
-
-        return HttpResponseRedirect("/search/")
+            return redirect('/search')
+        else:
+            print('not successful')
     else:
-        form = CreateForm()
-    return render(response,"search/createModel.html", {"form":form})
+        form = createAiForm()
+    return render(request,"search/createModel.html", {"form":form})
 
 
 def modelList(request):
-    m = Search.objects.all()
+    m = aiModel.objects.order_by('-date')
 
-    p = Paginator(m, 20)
+    p = Paginator(m, 15)
     page = request.GET.get('page')
     m = p.get_page(page)
 
@@ -45,7 +46,7 @@ def re_modelList(response):
 def modelSearch(request):
     if request.method == "POST":
         searched = request.POST['searched']
-        m = Search.objects.filter(modelName__contains=searched)
+        m = aiModel.objects.filter(name__contains=searched)
 
         p = Paginator(m, 75)
         page = request.GET.get('page')

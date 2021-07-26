@@ -16,7 +16,7 @@ from resource import models
 from resource.forms import documentforms
 
 from search import models
-from search.forms import CreateForm
+from search.forms import CreateForm, createAiForm
 
 #import pagination
 from django.core.paginator import Paginator
@@ -112,8 +112,7 @@ def deleteResource(request, resource_id):
     return redirect('/administration/resourceList')
 
 def model(request):
-    model = models.Search.objects.all()
-
+    model = models.aiModel.objects.all()
     filter = modelFilter(request.GET, queryset=model)
     model = filter.qs
 
@@ -124,8 +123,8 @@ def model(request):
     return render(request, "administration/model.html", {'model':model, 'filter':filter})
 
 def updateModel(request, model_id):
-    model = models.Search.objects.get(pk=model_id)
-    form = CreateForm(request.POST or None, instance=model)
+    model = models.aiModel.objects.get(pk=model_id)
+    form = createAiForm(request.POST or None, instance=model)
     if form.is_valid():
         form.save()
         print('form success')
@@ -134,6 +133,6 @@ def updateModel(request, model_id):
         return render(request, 'administration/updateModel.html', {'model':model, 'form':form})
 
 def deleteModel(request, model_id):
-    model = models.Search.objects.get(pk=model_id)
+    model = models.aiModel.objects.get(pk=model_id)
     model.delete()
     return redirect('/administration/modelList')
