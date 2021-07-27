@@ -22,6 +22,7 @@ class documentforms(forms.ModelForm):
             ('JPEG', 'JPEG'),
             ('PDF', 'PDF'),
             ('CSV', 'CSV'),
+            ('EPUB', 'EPUB'),
             ('OTHERS', 'OTHERS')
         )
         resource_choices = (
