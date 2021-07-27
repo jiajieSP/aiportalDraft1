@@ -19,7 +19,6 @@ django-heroku==0.3.1
 django-ipware==3.0.2
 django-tracking==0.2.7
 django-tracking-analyzer==1.1.1
-django-tracking2==0.4.2b1
 django-user-agents==0.4.0
 geoip2==4.2.0
 googletrans==3.1.0a0
