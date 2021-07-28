@@ -1,1 +1,1 @@
-web: gunicorn aiportal.wsgi
+web: gunicorn aiportalHeroku/aiportal.wsgi
