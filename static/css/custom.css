@@ -1,4 +1,8 @@
-html, body {
+.content {
+  background-color: red !important;
+}
+
+/* html, body {
     height: 100% !important;
 }
 
@@ -87,7 +91,7 @@ display: block !important;
   float: left !important;
   padding-right: 0.5rem !important;
   color: #74A739 !important;
-  content: var(--bs-breadcrumb-divider, ">") /* rtl: var(--bs-breadcrumb-divider, "/") */ !important;
+  content: var(--bs-breadcrumb-divider, ">") rtl: var(--bs-breadcrumb-divider, "/") !important;
 }
 
 .breadcrumb-item.active {
@@ -116,4 +120,4 @@ a {
       transition: none;
     }
   }
-
+ */
