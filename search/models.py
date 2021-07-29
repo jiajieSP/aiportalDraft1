@@ -1,5 +1,5 @@
 from django.db import models
-from datetime import datetime
+from datetime import date
 from django.db.models.fields import CharField, IntegerField
 from django.utils.timezone import now
 import datetime
@@ -37,12 +37,19 @@ class Item(models.Model):
 
 class aiModel(models.Model):
     name = models.CharField(verbose_name='Name of Model',max_length=130)
-    date = models.DateField(default=datetime.datetime.now)
-    wer = CharField(blank=True,null=True,max_length=130)
-    wordcount = IntegerField(blank=True,null=True)
+    date = models.DateField(default=datetime.date.today)
     usage = models.TextField(blank=True,null=True)
     creator = models.CharField(max_length=130,blank=True,null=True)
 
     def __str__(self):
         return self.name
     
+class aiModelGraph(models.Model):
+    modelName = models.ForeignKey(aiModel, on_delete=models.CASCADE)
+    recordName = models.CharField(verbose_name='Name of Record', max_length=130)
+    recordDate = models.DateField(default=datetime.date.today)
+    recordWer = models.IntegerField(blank=False, default='0')
+    recordWordcount = models.IntegerField(blank=False, default='0')
+        
+    def __str__(self):
+        return self.modelName
