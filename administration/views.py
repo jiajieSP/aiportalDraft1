@@ -3,7 +3,7 @@ from django.shortcuts import redirect, render
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
 
-from .filters import accountFilter, modelFilter, newsFilter, resourceFilter
+from .filters import accountFilter, modelFilter, newsFilter, resourceFilter, threadFilter
 
 from main import models
 from main import forms
@@ -12,11 +12,14 @@ from main.models import newsUpdate
 from register.forms import registerForm
 import register
 
-from resource import models
+from resource.models import document
 from resource.forms import documentforms
 
-from search import models
+from search.models import aiModel, aiModelGraph
 from search.forms import CreateForm, createAiForm
+
+from userfeedback import models
+from userfeedback.forms import createComment, createThread
 
 #import pagination
 from django.core.paginator import Paginator
@@ -112,7 +115,7 @@ def deleteResource(request, resource_id):
     return redirect('/administration/resourceList')
 
 def model(request):
-    model = models.aiModel.objects.all()
+    model = aiModel.objects.all()
     filter = modelFilter(request.GET, queryset=model)
     model = filter.qs
 
@@ -123,7 +126,7 @@ def model(request):
     return render(request, "administration/model.html", {'model':model, 'filter':filter})
 
 def updateModel(request, model_id):
-    model = models.aiModel.objects.get(pk=model_id)
+    model = aiModel.objects.get(pk=model_id)
     form = createAiForm(request.POST or None, instance=model)
     if form.is_valid():
         form.save()
@@ -133,6 +136,32 @@ def updateModel(request, model_id):
         return render(request, 'administration/updateModel.html', {'model':model, 'form':form})
 
 def deleteModel(request, model_id):
-    model = models.aiModel.objects.get(pk=model_id)
+    model = aiModel.objects.get(pk=model_id)
     model.delete()
     return redirect('/administration/modelList')
+
+def thread(request):
+    thread = models.thread.objects.all()
+    filter = threadFilter(request.GET, queryset=thread)
+    thread = filter.qs
+
+    p = Paginator(thread, 20)
+    page = request.GET.get('page')
+    thread = p.get_page(page)
+
+    return render(request, "administration/thread.html", {'thread':thread, 'filter':filter})
+
+def updateThread(request, thread_id):
+    thread = models.thread.objects.get(pk=thread_id)
+    form = createThread(request.POST or None, instance=thread)
+    if form.is_valid():
+        form.save()
+        print('comments updated')
+        return redirect('/administration/threadList')
+    else:
+        return render(request, 'administration/updateThread.html', {'thread':thread, 'form':form})
+
+def deleteThread(request, thread_id):
+    thread = models.thread.objects.get(pk=thread_id)
+    thread.delete()
+    return redirect('/administration/threadList')

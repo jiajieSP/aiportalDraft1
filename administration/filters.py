@@ -12,6 +12,7 @@ from main.models import newsUpdate
 from resource.models import document
 from resource.forms import documentforms
 from search.models import Search, aiModel
+from userfeedback.models import thread,comment
 
 
 class accountFilter(django_filters.FilterSet):
@@ -61,3 +62,8 @@ class modelFilter(django_filters.FilterSet):
     class Meta:
         model = aiModel
         fields = ['name', 'date', 'creator']
+
+class threadFilter(django_filters.FilterSet):
+    class Meta:
+        model = thread
+        fields = ['title', 'date', 'creator']

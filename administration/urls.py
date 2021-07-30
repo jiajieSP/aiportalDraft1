@@ -1,3 +1,4 @@
+from os import name
 from django.urls import path
 
 from . import views
@@ -19,5 +20,8 @@ urlpatterns = [
     path('deleteResource/<resource_id>', views.deleteResource, name='deleteResource'),
     path('modelList', views.model, name='modelList'),
     path('updateModel/<model_id>', views.updateModel, name='updateModel'),
-    path('deleteModel/<model_id>', views.deleteModel, name='deleteModel')
+    path('deleteModel/<model_id>', views.deleteModel, name='deleteModel'),
+    path('thread', views.thread, name='threadList'),
+    path('updateThread/<thread_id>', views.updateThread, name='updateThread'),
+    path('deleteTread/<thread_id>', views.deleteThread, name='deleteThread')
 ]
